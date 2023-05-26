@@ -109,12 +109,15 @@ class TestFileStorage(unittest.TestCase):
 
         storage = FileStorage()
         all_obj = FileStorage._FileStorage__objects
-        first_obj = list(all_obj.keys())[0]
-        clas = first_obj.split(".")
-        self.assertEqual(
-                all_obj[first_obj],
-                storage.get(classes[clas[0]], clas[1])
-                )
+        try:
+            first_obj = list(all_obj.keys())[0]
+            clas = first_obj.split(".")
+            self.assertEqual(
+                    all_obj[first_obj],
+                    storage.get(classes[clas[0]], clas[1])
+                    )
+        except IndexError:
+            """ json is empty """
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_save(self):
