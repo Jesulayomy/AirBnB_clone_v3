@@ -92,6 +92,13 @@ class TestFileStorage(unittest.TestCase):
     def test_count(self):
         """ Test that count returns the total no object of all or a class """
 
+        storage = models.storage
+        count = storage.count()
+        all_count = len(storage.all())
+
+        self.assertTrue(type(count) is int)
+        self.assertEqual(count, all_count)
+
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
         """ Test that get returns an object that exists in FS.__obj """

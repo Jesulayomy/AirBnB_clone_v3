@@ -70,9 +70,11 @@ test_file_storage.py'])
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
+
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_all_returns_dict(self):
         """Test that all returns the FileStorage.__objects attr"""
+
         storage = FileStorage()
         new_dict = storage.all()
         self.assertEqual(type(new_dict), dict)
@@ -81,6 +83,7 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_new(self):
         """test that new adds an object to the FileStorage.__objects attr"""
+
         storage = FileStorage()
         save = FileStorage._FileStorage__objects
         FileStorage._FileStorage__objects = {}
@@ -118,10 +121,12 @@ class TestFileStorage(unittest.TestCase):
                     )
         except IndexError:
             """ json is empty """
+            pass
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
         storage = FileStorage()
         new_dict = {}
         for key, value in classes.items():
