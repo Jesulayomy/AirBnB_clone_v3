@@ -73,19 +73,23 @@ class FileStorage:
         """ retrieves a single object """
 
         try:
-            obj = self.__objects[f"{cls.__name__}.{id}"]
-            return obj
-        except KeyError:
-            return None
+            if type(cls) is str:
+                cls = eval(cls)
+            objects = self.all(cls)
+            for obj in objects:
+                if obj.id == id:
+                    return obj
+        except Exception:
+            pass
+
+        return None
 
     def count(self, cls=None):
         """ Countts the total number of a class object in storage or all """
 
-        n = 0
         if cls is not None:
-            for key in self.__objects.keys():
-                if cls.__name__ in key:
-                    n += 1
-            return n
+            if type(cls) is str:
+                cls = eval(cls)
+            return len(self.all(cls))
         else:
-            return len(self.__objects.keys())
+            return len(self.all())

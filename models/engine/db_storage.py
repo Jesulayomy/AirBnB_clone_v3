@@ -78,17 +78,20 @@ class DBStorage:
     def get(self, cls, id):
         """ retrieves a single object """
 
+        if type(cls) is str:
+            cls = eval(cls)
         objcts = models.storage.all(cls)
         try:
             query = objcts[f"{cls.__name__}.{id}"]
             return query
         except Exception:
-            return None
+            obj = None
+        return obj
 
     def count(self, cls=None):
         """ Countts the total number of a class object in storage or all """
 
         if cls is not None:
-            return len(models.storage.all(cls).keys())
+            return len(self.all(cls))
         else:
-            return len(models.storage.all().keys())
+            return len(self.all())

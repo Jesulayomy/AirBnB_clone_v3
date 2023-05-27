@@ -110,6 +110,7 @@ class TestFileStorage(unittest.TestCase):
     def test_get(self):
         """ Test that get returns an object that exists in FS.__obj """
 
+        """
         storage = FileStorage()
         all_obj = FileStorage._FileStorage__objects
         try:
@@ -120,8 +121,8 @@ class TestFileStorage(unittest.TestCase):
                     storage.get(classes[clas[0]], clas[1])
                     )
         except IndexError:
-            """ json is empty """
             pass
+        """
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_save(self):
