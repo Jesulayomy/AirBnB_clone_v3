@@ -96,4 +96,28 @@ class TestFileStorage(unittest.TestCase):
     def test_get(self):
         """ Test that get returns an object that exists in FS.__obj """
 
-        pass
+        storage = models.storage
+        s1 = State()
+        s2 = State()
+        s1.name = "Test"
+        s2.name = "Gets"
+
+        found_l = False
+        found_d = False
+        for obj in storage.all(State).values():
+            if obj.name == "Test":
+                found_l = True
+            if obj.name == "Gets":
+                found_d = True
+
+        if not found_l:
+            storage.new(s1)
+            storage.save()
+            self.assertTrue(s1 is storage.get(State, s1.id))
+        if not found_d:
+            storage.new(s2)
+            storage.save()
+            self.assertTrue(s2 is storage.get(State, s2.id))
+
+        storage.close()
+        self.assertTrue(storage.get(State, "1234") is None)

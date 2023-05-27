@@ -27,7 +27,7 @@ def appViewStats():
     counts = {}
     for cls_name, cls_obj in classes.items():
         counts[cls_name] = storage.count(cls_obj)
-    return jsonify(count)
+    return jsonify(counts)
 
 
 @app_views.route('/status', strict_slashes=False)
