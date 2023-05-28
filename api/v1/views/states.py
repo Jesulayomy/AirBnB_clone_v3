@@ -34,7 +34,7 @@ def appViewAllStates():
         storage.new(newState)
         storage.save()
 
-        return jsonify(newState.to_dict())
+        return jsonify(newState.to_dict()), 201
 
 
 @app_views.route(
