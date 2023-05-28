@@ -2,7 +2,7 @@
 """ Configures RESTful api for the places route """
 
 from api.v1.views import app_views
-from flask import jsonify, request, abort
+from flask import abort, jsonify, request
 from models import storage
 from models.place import Place
 
@@ -102,23 +102,22 @@ def appViewPlacesSearch():
         abort(400, "Not a JSON")
 
     places = storage.all(Place)
-    placesList = []
-    for place in place.values():
-        placesList.append(place.to_dict())
+    places_dict = [place.to_dict() for place in places.values()]
 
     if not jsonDict:
-        return jsonify(placesList)
+        return jsonify(places_dict)
 
     if not jsonDict.get("states") and (
             not jsonDict.get("cities")) and (
             not jsonDict.get("amenities")):
-        return jsonify(placesList)
+        return jsonify(places_dict)
+
     result = []
 
     if jsonDict.get("states"):
         for state_id in jsonDict["states"]:
             state = storage.get("State", state_id)
-            if state is not None:
+            if state:
                 for city in state.cities:
                     for place in city.places:
                         if place not in result:
@@ -135,31 +134,29 @@ def appViewPlacesSearch():
     if jsonDict.get("amenities"):
         if not result:
             result = [place for place in places.values()]
-        filtered = []
+        filt = []
         amenities = []
         for amenity_id in jsonDict["amenities"]:
             amenities.append(storage.get("Amenity", amenity_id))
 
         for place in result:
             place_amenities = place.amenities
-            amenity_check = True
+            has_all = True
             for amenity in amenities:
                 if amenity not in place_amenities:
-                    amenity_check = False
+                    has_all = False
                     break
 
             if has_all:
-                filtered.append(place)
-
-        filtered_dict = []
-        for place in filtered:
+                filt.append(place)
+        for place in filt:
             place_dict = place.to_dict()
             if "amenities" in place_dict:
                 del place_dict["amenities"]
-            filtered_dict.append(place_dict)
-        return jsonify(filtered_dict)
+            filt_dict.append(place_dict)
 
-    result_dict = []
-    for place in result:
-        result_dict.append(place.to_dict)
+        return jsonify(filt_dict)
+
+    result_dict = [place.to_dict() for place in result]
     return jsonify(result_dict)
+    """ configures route for places_search """
