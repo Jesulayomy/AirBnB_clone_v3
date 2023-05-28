@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """ Starts the Applicaion with flsak framework """
-import os
+
+from api.v1.views import app_views
 from flask import Flask, jsonify
 from models import storage
-from api.v1.views import app_views
+import os
 
 app = Flask(__name__)
 app.register_blueprint(app_views)
@@ -14,7 +15,7 @@ def pageNotFound(err):
     """ Throws a json error for a not found page """
 
     errDct = {"error": "Not found"}
-    return jsonify(errDct), 404
+    return jsonify(errDct), err.code
 
 
 @app.teardown_appcontext
