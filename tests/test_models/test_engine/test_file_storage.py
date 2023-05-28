@@ -110,19 +110,16 @@ class TestFileStorage(unittest.TestCase):
     def test_get(self):
         """ Test that get returns an object that exists in FS.__obj """
 
-        """
         storage = FileStorage()
-        all_obj = FileStorage._FileStorage__objects
-        try:
-            first_obj = list(all_obj.keys())[0]
-            clas = first_obj.split(".")
-            self.assertEqual(
-                    all_obj[first_obj],
-                    storage.get(classes[clas[0]], clas[1])
-                    )
-        except IndexError:
-            pass
-        """
+        example = State()
+        storage.new(example)
+        self.assertEqual(
+                example,
+                storage.get("State", example.id)
+                )
+        self.assertTrue(storage.get("State", "Fake_id") is None)
+        with self.assertRaises(TypeError):
+            storage.get("State")
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_save(self):

@@ -80,18 +80,18 @@ class DBStorage:
 
         if type(cls) is str:
             cls = eval(cls)
-        objcts = models.storage.all(cls)
         try:
-            query = objcts[f"{cls.__name__}.{id}"]
-            return query
+            obj = self.__session.query(cls).filter_by(id=id).one()
+            return obj
         except Exception:
-            obj = None
-        return obj
+            return None
 
     def count(self, cls=None):
         """ Countts the total number of a class object in storage or all """
 
         if cls is not None:
+            if type(cls) is str:
+                cls = eval(cls)
             return len(self.all(cls))
         else:
             return len(self.all())

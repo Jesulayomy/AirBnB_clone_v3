@@ -100,6 +100,13 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(count, all_count)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get_empty(self):
+        """ Test that get returns an object that exists in FS.__obj """
+
+        with self.assertRaises(TypeError):
+            models.storage.get("State")
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
         """ Test that get returns an object that exists in FS.__obj """
 
@@ -127,4 +134,4 @@ class TestFileStorage(unittest.TestCase):
             self.assertTrue(s2 is storage.get(State, s2.id))
 
         storage.close()
-        self.assertTrue(storage.get(State, "1234") is None)
+        self.assertTrue(storage.get(State, "fake_id") is None)

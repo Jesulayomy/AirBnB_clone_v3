@@ -76,7 +76,7 @@ class FileStorage:
             if type(cls) is str:
                 cls = eval(cls)
             objects = self.all(cls)
-            for obj in objects:
+            for obj in objects.values():
                 if obj.id == id:
                     return obj
         except Exception:
